@@ -1,0 +1,29 @@
+name: Test Firmware Build
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: qmkfm/qmk_cli
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Install Vial
+      run: git clone --depth 1 https://github.com/vial-kb/vial-qmk.git
+    - name: Verify Vial UID is unique
+      run: python3 util/ci_vial_verify_uid.py
+    - name: Compile Keyboard Firmware
+      run: |
+        cd vial-qmk && make git-submodule
+        mv ../gingham-haptic-oled keyboards/gingham
+        make gingham:gingham-haptic-oled
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: gingham_gingham-haptic-oled.hex
+        path: .build/gingham_gingham-haptic-oled.hex
