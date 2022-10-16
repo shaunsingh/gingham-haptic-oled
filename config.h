@@ -1,11 +1,14 @@
 #pragma once
 
+// every vial keyboard needs a unique UID
 #define VIAL_KEYBOARD_UID { 0x21, 0x72, 0x62, 0xA2, 0x6D, 0xD7, 0x3C, 0x39 }
 
+// general settings
 #define TAPPING_TERM 170
 #define IGNORE_MOD_TAP_INTERRUPT
 #define TAPPING_FORCE_HOLD
 
+// haptic driver settings
 #ifdef HAPTIC_ENABLE
 #define FB_ERM_LRA 1
 #define FB_BRAKEFACTOR 3 // For 1x:0, 2x:1, 3x:2, 4x:3, 6x:4, 8x:5, 16x:6, Disable Braking:7
@@ -20,7 +23,18 @@
 #define NO_HAPTIC_LOCKKEYS
 #endif
 
+// oled settings
 #ifdef OLED_ENABLE
 #define OLED_DISPLAY_128X64
 #define OLED_FONT_H "lib/glcdfont.c"
 #endif
+
+// space saving: remove locking key support
+#undef LOCKING_SUPPORT_ENABLE
+#undef LOCKING_RESYNC_ENABLE
+
+// space saving: disable one-shots
+#define NO_ACTION_ONESHOT
+
+// space savings: max of 8 layers
+#define LAYER_STATE_8BIT

@@ -18,6 +18,7 @@ COMMAND_ENABLE = no         # Commands for debug and configuration
 SLEEP_LED_ENABLE = no       # Breathing sleep LED during USB suspend
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
+SPACE_CADET_ENABLE = no     # Wierd parenthesis shift thing we don't need
 
 # Usb Nkey Rollover + audio/system controls
 EXTRAKEY_ENABLE = yes
@@ -42,8 +43,8 @@ HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
 DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
-#LTO_ENABLE = yes           # Link Time Optimization
+LTO_ENABLE = yes            # Link Time Optimization
 #QMK_SETTINGS = no          # I hardcode them in anyways
-COMBO_ENABLE = no           # Disable "regular" combos
+#COMBO_ENABLE = no          # Disable "regular" combos
 #KEY_OVERRIDE_ENABLE = no   # Disable "overridding" sets of keys
 #TAP_DANCE_ENABLE = no      # Disable 1-2-3 tap combos
