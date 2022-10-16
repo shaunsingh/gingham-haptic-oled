@@ -8,8 +8,8 @@
 #endif
 
 // timers for alt-tab
-bool is_alt_tab_active = false;
-uint16_t alt_tab_timer = 0;
+// bool is_alt_tab_active = false;
+// uint16_t alt_tab_timer = 0;
 
 // declare our layers
 enum gingham_layers{
@@ -25,7 +25,7 @@ enum custom_keycodes {
     RAISE,
     ADJUST,
     OS_SWAP,
-    ALT_TAB,
+    // ALT_TAB,
     WM_LEFT,
     WM_RGHT,
 };
@@ -50,7 +50,7 @@ LT(LOWER, KC_CAPS), KC_A,   KC_S,     KC_D,  KC_F,  KC_G,  KC_H,    KC_J,  KC_K,
 
     [_LOWER] = LAYOUT_60_ansi_split_bs_rshift( /* Haptics, arrows, WM, Audio, brightness, Dynamic Macro Recording, mouse on hjkl, locks */
         KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_EJCT, KC_EJCT,
-        ALT_TAB,  WM_LEFT,  KC_UP,    WM_RGHT,  DM_PLY1,  DM_REC1,  KC_BTN1,  KC_BTN2,  KC_WH_U,  KC_WH_D,  KC_ACL0,  KC_TRNS,  KC_TRNS,
+        KC_F1,    WM_LEFT,  KC_UP,    WM_RGHT,  DM_PLY1,  DM_REC1,  KC_BTN1,  KC_BTN2,  KC_WH_U,  KC_WH_D,  KC_ACL0,  KC_TRNS,  KC_TRNS,
         KC_TRNS,  KC_LEFT,  KC_DOWN,  KC_RGHT,  DM_PLY2,  DM_REC2,  KC_MS_L,  KC_MS_D,  KC_MS_U,  KC_MS_R,  KC_ACL2,  KC_NUM,   KC_TRNS,  KC_TRNS,
         KC_TRNS,            KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_MPLY,  DM_RSTP,  KC_PGDN,  KC_PGUP,  KC_SCRL,  KC_BRMD,  KC_BRMU,  KC_BRK,   KC_TRNS,
         HPT_TOG,  HPT_RST,  HPT_FBK,                                KC_TRNS,                                OS_SWAP,  KC_TRNS,  KC_TRNS,  KC_TRNS),
@@ -320,18 +320,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               clear_keyboard();
               return false;
             }
-        case ALT_TAB:
-            if (record->event.pressed) {
-                if (!is_alt_tab_active) {
-                    is_alt_tab_active = true;
-                    register_code(KC_LALT);
-                }
-                alt_tab_timer = timer_read();
-                register_code(KC_TAB);
-            } else {
-                unregister_code(KC_TAB);
-            }
-            return false;
+//        case ALT_TAB:
+//            if (record->event.pressed) {
+//                if (!is_alt_tab_active) {
+//                    is_alt_tab_active = true;
+//                    register_code(KC_LALT);
+//                }
+//                alt_tab_timer = timer_read();
+//                register_code(KC_TAB);
+//            } else {
+//                unregister_code(KC_TAB);
+//            }
+//            return false;
         case WM_LEFT:
             if (record->event.pressed) {
                 tap_code16(LGUI(KC_LEFT));
