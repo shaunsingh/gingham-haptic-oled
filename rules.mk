@@ -40,7 +40,7 @@ LTO_ENABLE = yes            # Link Time Optimization
 # OLED
 OLED_ENABLE = yes           # Enable OLED
 OLED_DRIVER = SSD1306       # 128x64 OLED Driver
-WPM_ENABLE = yes            # Enable calculation of WPM
+WPM_ENABLE = no             # Enable calculation of WPM
 
 # VIAL
 VIA_ENABLE = yes            # Enable VIA support
