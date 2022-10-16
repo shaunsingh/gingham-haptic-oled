@@ -23,19 +23,18 @@ enum gingham_layers{
     _ADJUST, // empty dynamic
 };
 
-
 // ┌───────────────────────────────────────────────────────────┐
 // │ d e f i n e   k e y c o d e s                             │
 // └───────────────────────────────────────────────────────────┘
 
 enum custom_keycodes {
-    QWERTY = SAFE_RANGE,
-    LOWER,
-    RAISE,
-    ADJUST,
-    OS_SWAP,
-    WM_LEFT,
-    WM_RGHT,
+    QWERTY = SAFE_RANGE, // layer 1
+    LOWER,               // layer 2
+    RAISE,               // layer 3
+    ADJUST,              // layer 4
+    OS_SWAP,             // swap between windows/macOS keymap
+    WM_LEFT,             // prev workspace
+    WM_RGHT,             // next workspace
 };
 
 // ┌───────────────────────────────────────────────────────────┐
@@ -85,19 +84,21 @@ LT(LOWER, KC_CAPS), KC_A,   KC_S,     KC_D,  KC_F,  KC_G,  KC_H,    KC_J,  KC_K,
         KC_TRNS,  KC_TRNS,  KC_TRNS,                                KC_TRNS,                                KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS),
 };
 
-
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ O L E D                                                                                                                                    │
 // └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 // ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 
 #ifdef OLED_ENABLE
+
+// timer for oled sleep status
 uint32_t oled_timer = 0;
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ d y n a m i c   m a c r o                                 │
 // └───────────────────────────────────────────────────────────┘
 
+// variables to keep track of dynamic macro status + icons
 char layer_state_str[24];
 char o_text[24] = "";
 int dmacro_num = 0; 
@@ -163,55 +164,42 @@ void render_logo(void) {
 }
 
 // Handle the main oled displays
-void render_os_lock_status(void) {
-    static const char PROGMEM sep_v[] = {0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0};
-    static const char PROGMEM sep_h1[] = {0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0};
-    static const char PROGMEM sep_h2[] = {0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0};
-    static const char PROGMEM face_1[] = {0x80, 0x81, 0x82, 0x83, 0x84, 0xE1, 0};  
-    static const char PROGMEM face_2[] = {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xE1, 0}; 
-    static const char PROGMEM os_m_1[] = {0x95, 0x96, 0};
-    static const char PROGMEM os_m_2[] = {0xB5, 0xB6, 0};
-    static const char PROGMEM os_w_1[] = {0x97, 0x98, 0};
-    static const char PROGMEM os_w_2[] = {0xB7, 0xB8, 0};
-    static const char PROGMEM s_lock[] = {0x8F, 0x90, 0};
-    static const char PROGMEM n_lock[] = {0x91, 0x92, 0};
-    static const char PROGMEM c_lock[] = {0x93, 0x94, 0};
-    static const char PROGMEM b_lock[] = {0xE1, 0xE1, 0};
-    #ifdef AUDIO_ENABLE  
-      static const char PROGMEM aud_en[] = {0xAF, 0xB0, 0};
-      static const char PROGMEM aud_di[] = {0xCF, 0xD0, 0};
-    #endif
-    #ifdef HAPTIC_ENABLE
-      static const char PROGMEM hap_en[] = {0xB1, 0xB2, 0};
-    #endif
-
+void render_status(void) {
     // vertical seperator 1/2
+    static const char PROGMEM sep_v[] = {0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0};
     oled_write_ln_P(sep_v, false);
 
     // draw 1/2 OS logo 
     if (keymap_config.swap_lctl_lgui) {
+        static const char PROGMEM os_m_1[] = {0x95, 0x96, 0};
         oled_write_P(os_m_1, false);
     } else {
+        static const char PROGMEM os_w_1[] = {0x97, 0x98, 0};
         oled_write_P(os_w_1, false);
     }
 
     // draw space seperator 1/2
+    static const char PROGMEM sep_h1[] = {0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0};
     oled_write_P(sep_h1, false);
 
     // draw 1/2 of face
+    static const char PROGMEM face_1[] = {0x80, 0x81, 0x82, 0x83, 0x84, 0xE1, 0};  
     oled_write_P(face_1, false);
 
     // draw 2/2 of OS logo 
     if (keymap_config.swap_lctl_lgui) {
+        static const char PROGMEM os_m_2[] = {0xB5, 0xB6, 0};
         oled_write_P(os_m_2, false);
     } else {
+        static const char PROGMEM os_w_2[] = {0xB7, 0xB8, 0};
         oled_write_P(os_w_2, false);
     }
 
     // draw space seperator 2/2
     oled_write_P(sep_h1, false);
 
-    // draw 2/2 of face 
+    // draw 2/2 of face
+    static const char PROGMEM face_2[] = {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xE1, 0}; 
     oled_write_P(face_2, false);
 
     // draw vertical seperator 2/2
@@ -220,23 +208,28 @@ void render_os_lock_status(void) {
     led_t led_usb_state = host_keyboard_led_state();
 
     // draw num/caps/scroll locks
+    static const char PROGMEM b_lock[] = {0xE1, 0xE1, 0};
     if (led_usb_state.num_lock) {
+        static const char PROGMEM n_lock[] = {0x91, 0x92, 0};
         oled_write_P(n_lock, false);
     } else {
         oled_write_P(b_lock, false);
     }
     if (led_usb_state.caps_lock) {
+        static const char PROGMEM c_lock[] = {0x93, 0x94, 0};
         oled_write_P(c_lock, false);
     } else {
         oled_write_P(b_lock, false);
     }
     if (led_usb_state.scroll_lock) {
+        static const char PROGMEM s_lock[] = {0x8F, 0x90, 0};
         oled_write_P(s_lock, false);
     } else {
         oled_write_P(b_lock, false);
     }
 
     // draw space seperator (again)
+    static const char PROGMEM sep_h2[] = {0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0};
     oled_write_P(sep_h2, false);
 
     // draw haptic icon & audio icon
@@ -249,32 +242,35 @@ void render_os_lock_status(void) {
 
     #ifdef AUDIO_ENABLE
         if (is_audio_on()) { 
+          static const char PROGMEM aud_en[] = {0xAF, 0xB0, 0};
           oled_write_P(aud_en, false); 
         } else {
+          static const char PROGMEM aud_di[] = {0xCF, 0xD0, 0};
           oled_write_P(aud_di, false);
         }
     #endif
 
      #ifdef HAPTIC_ENABLE
+        static const char PROGMEM hap_en[] = {0xB1, 0xB2, 0};
         oled_write_P(hap_en, false); 
      #endif
 }
 
-// store the layer for future reference
+// if we aren't writing a macro then display current layer
 int layerstate = 0;
 layer_state_t layer_state_set_kb(layer_state_t state) {
       switch (get_highest_layer(layer_state | default_layer_state)) {
             case 0:
-                strcpy ( layer_state_str, "BASE QWERTY");
+                strcpy ( layer_state_str, "Q_ B A S E");
                 break;
             case 1:
-                strcpy ( layer_state_str, "LOWER");
+                strcpy ( layer_state_str, "_ <<<<");
                 break;
             case 2:
-                strcpy ( layer_state_str, "RAISE");
+                strcpy ( layer_state_str, ">>>> _");
                 break;
             case 3:
-                strcpy ( layer_state_str, "ADJUST");
+                strcpy ( layer_state_str, "A D J _");
                 break;
             default:
                 strcpy ( layer_state_str, "XXXXXX");
@@ -297,6 +293,7 @@ oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
 // │ w r i t e   t o   o l e d                                 │
 // └───────────────────────────────────────────────────────────┘
 
+// 10s keep status, 10-30s render logo, after 30s turn off
 bool oled_task_user(void) {
     if (timer_elapsed32(oled_timer) > 30000) {
         oled_off();
@@ -309,16 +306,16 @@ bool oled_task_user(void) {
             if(dmacro_num == 3){ oled_write_P(play_ico, false); }
         #endif
         oled_write_ln(o_text, false);
-        render_os_lock_status(); 
+        render_status(); 
     }
     return false;
 }
 #endif
 
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // poll timer
     #ifdef OLED_ENABLE
-    oled_timer = timer_read32();
+        oled_timer = timer_read32();
     #endif
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -327,6 +324,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 
     switch (keycode) {
+        // swap ctrl with cmd/gui depending on windows/mac
         case OS_SWAP: 
             if (record->event.pressed) {
                 if (!keymap_config.swap_lctl_lgui) {
@@ -348,11 +346,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               clear_keyboard();
               return false;
             }
+        // switch to previous workspace
         case WM_LEFT:
             if (record->event.pressed) {
                 tap_code16(LGUI(KC_LEFT));
             }
             return false;
+        // switch to next workspace
         case WM_RGHT:
             if (record->event.pressed) {
                 tap_code16(LGUI(KC_RGHT));
