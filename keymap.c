@@ -26,9 +26,9 @@ enum custom_keycodes {
     RAISE,
     ADJUST,
     OS_SWAP,
-    ALT_TAB
-    WIN_LEFT,
-    WIN_RGHT,
+    ALT_TAB,
+    WN_LEFT,
+    WN_RGHT,
 };
 
 // set our keymaps
@@ -42,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_LOWER] = LAYOUT_60_ansi_split_bs_rshift( /* FN */
         KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_EJCT, KC_EJCT,
-        ALT_TAB,  WIN_LEFT, KC_UP,    WIN_RGHT, DM_PLY1,  DM_REC1,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  QK_BOOT,
+        ALT_TAB,  WN_LEFT,  KC_UP,    WN_RGHT,  DM_PLY1,  DM_REC1,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  QK_BOOT,
         KC_TRNS,  KC_LEFT,  KC_DOWN,  KC_RGHT,  DM_PLY2,  DM_REC2,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
         KC_TRNS,            KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_MPLY,  DM_RSTP,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
         HPT_TOG,  HPT_RST,  HPT_FBK,                                KC_TRNS,                                OS_SWAP,  KC_TRNS,  KC_TRNS,  KC_TRNS),
@@ -303,12 +303,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_TAB);
             }
             return false;
-        case WIN_LEFT:
+        case WN_LEFT:
             if (record->event.pressed) {
                 tap_code16(LGUI(KC_LEFT));
             }
             return false;
-        case WIN_RGHT:
+        case WN_RGHT:
             if (record->event.pressed) {
                 tap_code16(LGUI(KC_RGHT));
             }
