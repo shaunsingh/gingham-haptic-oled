@@ -41,4 +41,4 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Link Time Optimization
-COMBO_ENABLE = no           # Disable Dynamic Combos 
+# COMBO_ENABLE = no           # Disable Dynamic Combos 

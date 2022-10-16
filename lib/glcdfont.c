@@ -1,5 +1,5 @@
 // Modified version of 'classic' fixed-space bitmap font for Adafruit_GFX. 
-// Added icons for Operating Systems, Logos, SL/NL?CL, and feature support
+// Added icons for Operating Systems, Logos, SL/NL/CL, and feature support
 
 #pragma once
 

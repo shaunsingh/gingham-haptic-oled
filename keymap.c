@@ -8,12 +8,16 @@
 #include "drivers/haptic/DRV2605L.h"
 #endif
 
+// timers for alt-tab
+bool is_alt_tab_active = false;
+uint16_t alt_tab_timer = 0;
+
 // declare our layers
 enum gingham_layers{
     _QWERTY, // base regular qwerty
-    _LOWER, // function/arrows/misc keys
-    _RAISE, // macros/productivity
-    _ADJUST, // audio/os
+    _LOWER,  // standard macros & features
+    _RAISE,  // empty dynamic
+    _ADJUST, // empty dynamic
 };
 
 enum custom_keycodes {
@@ -22,23 +26,26 @@ enum custom_keycodes {
     RAISE,
     ADJUST,
     OS_SWAP,
+    ALT_TAB
+    WIN_LEFT,
+    WIN_RGHT,
 };
 
 // set our keymaps
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_60_ansi_split_bs_rshift( /* Base */
-        KC_GESC,  KC_1,     KC_2,     KC_3,  KC_4,  KC_5,  KC_6,    KC_7,  KC_8,  KC_9,     KC_0,     KC_MINS,  KC_EQL,  KC_BSPC, KC_DEL,
+        KC_ESC,   KC_1,     KC_2,     KC_3,  KC_4,  KC_5,  KC_6,    KC_7,  KC_8,  KC_9,     KC_0,     KC_MINS,  KC_EQL,  KC_BSPC, KC_DEL,
         KC_TAB,   KC_Q,     KC_W,     KC_E,  KC_R,  KC_T,  KC_Y,    KC_U,  KC_I,  KC_O,     KC_P,     KC_LBRC,  KC_RBRC, KC_BSLS,
         KC_CAPS,  KC_A,     KC_S,     KC_D,  KC_F,  KC_G,  KC_H,    KC_J,  KC_K,  KC_L,     KC_SCLN,  KC_QUOT,           KC_ENT,
         KC_LSFT,            KC_Z,     KC_X,  KC_C,  KC_V,  KC_B,    KC_N,  KC_M,  KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT, ADJUST,
         KC_LCTL,  KC_LALT,  KC_LGUI,                       KC_SPC,                          KC_RGUI,  LOWER,    RAISE,   ADJUST),
 
     [_LOWER] = LAYOUT_60_ansi_split_bs_rshift( /* FN */
-        KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_TRNS, KC_TRNS,
-        KC_TRNS,  KC_TRNS,  KC_UP,    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  QK_BOOT  ,
-        KC_TRNS,  KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-        KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-        KC_VOLU,  KC_VOLD,  KC_MUTE,                                KC_TRNS,                                KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS),
+        KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_EJCT, KC_EJCT,
+        ALT_TAB,  WIN_LEFT, KC_UP,    WIN_RGHT, DM_PLY1,  DM_REC1,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  QK_BOOT,
+        KC_TRNS,  KC_LEFT,  KC_DOWN,  KC_RGHT,  DM_PLY2,  DM_REC2,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+        KC_TRNS,            KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_MPLY,  DM_RSTP,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+        HPT_TOG,  HPT_RST,  HPT_FBK,                                KC_TRNS,                                OS_SWAP,  KC_TRNS,  KC_TRNS,  KC_TRNS),
 
     [_RAISE] = LAYOUT_60_ansi_split_bs_rshift( /* Empty for dynamic keymaps */
         KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
@@ -104,7 +111,13 @@ void matrix_scan_user(void) {
               }
           }
       }
-   #endif
+  #endif
+  if (is_alt_tab_active) {
+    if (timer_elapsed(alt_tab_timer) > 1000) {
+      unregister_code(KC_LALT);
+      is_alt_tab_active = false;
+    }
+  }
 }
 
 // Store a shortened version of the Gingham logo on the rear cover's silkscreen
@@ -149,7 +162,7 @@ void render_os_lock_status(void) {
 
     // draw space seperator 1/2
     oled_write_P(sep_h1, false);
-    
+
     // draw 1/2 of face
     oled_write_P(face_1, false);
 
@@ -162,15 +175,15 @@ void render_os_lock_status(void) {
 
     // draw space seperator 2/2
     oled_write_P(sep_h1, false);
-    
+
     // draw 2/2 of face 
     oled_write_P(face_2, false);
-    
+
     // draw vertical seperator 2/2
     oled_write_ln_P(sep_v, false);
 
     led_t led_usb_state = host_keyboard_led_state();
-    
+
     // draw num/caps/scroll locks
     if (led_usb_state.num_lock) {
         oled_write_P(n_lock, false);
@@ -236,7 +249,6 @@ bool oled_task_kb(void) {
     if (!oled_task_user()) {
         return false;
     }
-    
     if (get_current_wpm() < 60) {
       #ifdef DYNAMIC_MACRO_ENABLE
           if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
@@ -248,12 +260,20 @@ bool oled_task_kb(void) {
     } else {
       render_logo();
     }
-    
     return false;
 }
 #endif
 
-// macors for keymaps
+// disable oled when under low-power mode
+void suspend_power_down_user(void) {
+    oled_off();
+}
+
+void suspend_wakeup_init_user(void) {
+    oled_on();
+}
+
+// macros for keymaps
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case OS_SWAP: 
@@ -271,6 +291,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               clear_keyboard();
               return false;
             }
+        case ALT_TAB:
+            if (record->event.pressed) {
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                }
+                alt_tab_timer = timer_read();
+                register_code(KC_TAB);
+            } else {
+                unregister_code(KC_TAB);
+            }
+            return false;
+        case WIN_LEFT:
+            if (record->event.pressed) {
+                tap_code16(LGUI(KC_LEFT));
+            }
+            return false;
+        case WIN_RGHT:
+            if (record->event.pressed) {
+                tap_code16(LGUI(KC_RGHT));
+            }
+            return false;
         case QWERTY:
             if (record->event.pressed) {
                 set_single_persistent_default_layer(_QWERTY);
@@ -323,3 +365,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
+
+// Flexible macOS-friendly Grave Escape
+const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, KC_ESC, S(KC_GRAVE));
+const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, KC_ESC, KC_GRAVE);
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPACE, KC_DELETE);
+
+
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &tilde_esc_override,
+    &grave_esc_override,
+    &delete_key_override,
+    NULL
+};
