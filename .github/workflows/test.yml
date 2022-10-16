@@ -1,9 +1,9 @@
-name: Test Firmware Build
+name: Build Firmware 
 
 on:
   push:
     branches:
-    - master
+    - main
 
 jobs:
   test:
@@ -14,16 +14,20 @@ jobs:
       with:
         fetch-depth: 0
     - name: Install Vial
-      run: git clone --depth 1 https://github.com/vial-kb/vial-qmk.git
-    - name: Verify Vial UID is unique
-      run: python3 util/ci_vial_verify_uid.py
+      run: |
+        cd .. && git clone --depth 1 https://github.com/vial-kb/vial-qmk.git
+        cd vial-qmk && make git-submodule
     - name: Compile Keyboard Firmware
       run: |
-        cd vial-qmk && make git-submodule
-        mv ../gingham-haptic-oled keyboards/gingham
-        make gingham:gingham-haptic-oled
+        cd ..  && cp -r gingham-haptic-oled/ vial-qmk/keyboards/yiancardesigns/gingham/keymaps/
+        cd vial-qmk 
+        python3 util/ci_vial_verify_uid.py 
+        make yiancardesigns/gingham:gingham-haptic-oled
+    - name: Copy Firmware
+      run: |
+        cd .. && cp vial-qmk/yiancardesigns_gingham_gingham-haptic-oled.hex gingham-haptic-oled/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
-        name: gingham_gingham-haptic-oled.hex
-        path: .build/gingham_gingham-haptic-oled.hex
+        name: gingham-haptic-oled-firmware.hex
+        path: yiancardesigns_gingham_gingham-haptic-oled.hex
