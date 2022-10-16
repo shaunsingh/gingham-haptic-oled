@@ -272,24 +272,17 @@ bool oled_task_kb(void) {
     if (!oled_task_user()) {
         return false;
     }
-//    if (get_current_wpm() < 60) {
-//      #ifdef DYNAMIC_MACRO_ENABLE
-//          if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
-//          if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
-//          if(dmacro_num == 3){ oled_write_P(play_ico, false); }
-//      #endif
-//      oled_write_ln(o_text, false);
-//      render_os_lock_status(); 
-//    } else {
-//      render_logo();
-//    }
-    #ifdef DYNAMIC_MACRO_ENABLE
-        if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
-        if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
-        if(dmacro_num == 3){ oled_write_P(play_ico, false); }
-    #endif
-    oled_write_ln(o_text, false);
-    render_os_lock_status(); 
+    if (get_current_wpm() < 60) {
+      #ifdef DYNAMIC_MACRO_ENABLE
+          if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
+          if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
+          if(dmacro_num == 3){ oled_write_P(play_ico, false); }
+      #endif
+      oled_write_ln(o_text, false);
+      render_os_lock_status(); 
+    } else {
+      render_logo();
+    }
     return false;
 }
 #endif
