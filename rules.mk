@@ -33,7 +33,7 @@ OLED_DRIVER = SSD1306       # 128x64 OLED Driver
 WPM_ENABLE = yes            # Enable calculation of WPM
 
 # Audio
-AUDIO_ENABLE = yes          # Audio output
+AUDIO_ENABLE = no           # Audio output
 
 # Haptics
 HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
@@ -43,7 +43,7 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Link Time Optimization
-QMK_SETTINGS = no           # I hardcode them in anyways
+#QMK_SETTINGS = no          # I hardcode them in anyways
 COMBO_ENABLE = no           # Disable "regular" combos
 #KEY_OVERRIDE_ENABLE = no   # Disable "overridding" sets of keys
 #TAP_DANCE_ENABLE = no      # Disable 1-2-3 tap combos
