@@ -36,6 +36,7 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Link Time Optimization
+COMBO_ENABLE = no           # Disable dynamic combos
 
 # OLED
 OLED_ENABLE = yes           # Enable OLED
