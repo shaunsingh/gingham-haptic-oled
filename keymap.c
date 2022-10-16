@@ -130,7 +130,7 @@ int dmacro_num = 0;
 
 void matrix_scan_user(void) {
   #ifdef DYNAMIC_MACRO_ENABLE
-    if(dmacro_num > 0){
+    if (dmacro_num > 0) {
         if (timer_elapsed(dmacro_timer) < 3000) {
             strcpy ( o_text, dmacro_text[dmacro_num] );
           }
@@ -298,9 +298,9 @@ oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
 // └───────────────────────────────────────────────────────────┘
 
 bool oled_task_user(void) {
-    if (timer_elapsed32(oled_timer)) > 30000) {
+    if (timer_elapsed32(oled_timer) > 30000) {
         oled_off();
-    } else if (timer_elapsed32(oled_timer)) > 10000) {
+    } else if (timer_elapsed32(oled_timer) > 10000) {
         render_logo();
     } else {
         #ifdef DYNAMIC_MACRO_ENABLE

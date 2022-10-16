@@ -36,7 +36,7 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Enable Link Time Optimization
-KEY_OVERRIDE_ENABLE = no    # Key overrides are pretty useless too
+KEY_OVERRIDE_ENABLE = no    # Key overrides just feel weird
 
 # OLED
 OLED_ENABLE = yes           # Enable OLED
