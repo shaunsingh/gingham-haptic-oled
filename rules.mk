@@ -18,7 +18,6 @@ COMMAND_ENABLE = no         # Commands for debug and configuration
 SLEEP_LED_ENABLE = no       # Breathing sleep LED during USB suspend
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
-AUDIO_ENABLE = no           # Audio output
 
 # Usb Nkey Rollover + audio/system controls
 EXTRAKEY_ENABLE = yes
@@ -33,6 +32,9 @@ OLED_ENABLE = yes           # Enable OLED
 OLED_DRIVER = SSD1306       # 128x64 OLED Driver
 WPM_ENABLE = yes            # Enable calculation of WPM
 
+# Audio
+AUDIO_ENABLE = yes          # Audio output
+
 # Haptics
 HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
 
@@ -41,3 +43,4 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Link Time Optimization
+QMK_SETTINGS = no           # I hardcode them in anyways
