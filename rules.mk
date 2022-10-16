@@ -43,7 +43,7 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Link Time Optimization
-QMK_SETTINGS = no           # I hardcode them in anyways
+#QMK_SETTINGS = no          # I hardcode them in anyways
 COMBO_ENABLE = no           # Disable "regular" combos
-#KEY_OVERRIDE_ENABLE = no   # Disable "overridding" sets of keys
-#TAP_DANCE_ENABLE = no      # Disable 1-2-3 tap combos
+KEY_OVERRIDE_ENABLE = no    # Disable "overridding" sets of keys
+TAP_DANCE_ENABLE = no       # Disable 1-2-3 tap combos
