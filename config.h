@@ -5,6 +5,7 @@
 
 // general settings
 #define TAPPING_TERM 170
+#define TAPPING_TOGGLE 2
 #define IGNORE_MOD_TAP_INTERRUPT
 #define TAPPING_FORCE_HOLD
 
@@ -35,6 +36,3 @@
 
 // space saving: disable one-shots
 #define NO_ACTION_ONESHOT
-
-// space savings: max of 8 layers
-// #define LAYER_STATE_8BIT
