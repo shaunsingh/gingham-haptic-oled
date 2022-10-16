@@ -37,4 +37,4 @@
 #define NO_ACTION_ONESHOT
 
 // space savings: max of 8 layers
-#define LAYER_STATE_8BIT
+// #define LAYER_STATE_8BIT
