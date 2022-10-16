@@ -33,7 +33,7 @@ OLED_DRIVER = SSD1306       # 128x64 OLED Driver
 WPM_ENABLE = yes            # Enable calculation of WPM
 
 # Audio
-AUDIO_ENABLE = yes          # Audio output
+AUDIO_ENABLE = no           # Audio output
 
 # Haptics
 HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
