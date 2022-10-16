@@ -7,11 +7,15 @@
 #include "drivers/haptic/DRV2605L.h"
 #endif
 
-// timers for alt-tab
-bool is_alt_tab_active = false;
-uint16_t alt_tab_timer = 0;
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ D E F I N I T I O N S                                                                                                                      │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 
-// declare our layers
+// ┌───────────────────────────────────────────────────────────┐
+// │ d e f i n e   l a y e r s                                 │
+// └───────────────────────────────────────────────────────────┘ 
+
 enum gingham_layers{
     _QWERTY, // base regular qwerty
     _LOWER,  // standard macros & features
@@ -19,18 +23,25 @@ enum gingham_layers{
     _ADJUST, // empty dynamic
 };
 
+
+// ┌───────────────────────────────────────────────────────────┐
+// │ d e f i n e   k e y c o d e s                             │
+// └───────────────────────────────────────────────────────────┘
+
 enum custom_keycodes {
     QWERTY = SAFE_RANGE,
     LOWER,
     RAISE,
     ADJUST,
     OS_SWAP,
-    ALT_TAB,
     WM_LEFT,
     WM_RGHT,
 };
 
-// define startup tones
+// ┌───────────────────────────────────────────────────────────┐
+// │ d e f i n e   s o u n d s                                 │
+// └───────────────────────────────────────────────────────────┘
+
 #ifdef AUDIO_ENABLE
   #define WINXP_SOUND W__NOTE(_DS6), Q__NOTE(_DS5), H__NOTE(_AS5), H__NOTE(_GS5), H__NOTE(_DS5), H__NOTE(_DS6), H__NOTE(_AS5)
   #define MAC_SOUND S__NOTE(_CS5), B__NOTE(_C5)
@@ -39,7 +50,11 @@ enum custom_keycodes {
   float mac_song[][2] = SONG(MAC_SOUND);
 #endif
 
-// set our keymaps
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ K E Y M A P S                                                                                                                              │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_60_ansi_split_bs_rshift( /* Base w/ TAP on caps for LOWER + toggle TAPs on bottom right for layers  */
         KC_GESC,  KC_1,     KC_2,     KC_3,  KC_4,  KC_5,  KC_6,    KC_7,  KC_8,  KC_9,     KC_0,     KC_MINS,  KC_EQL,  KC_BSPC, KC_DEL,
@@ -50,7 +65,7 @@ LT(LOWER, KC_CAPS), KC_A,   KC_S,     KC_D,  KC_F,  KC_G,  KC_H,    KC_J,  KC_K,
 
     [_LOWER] = LAYOUT_60_ansi_split_bs_rshift( /* Haptics, arrows, WM, Audio, brightness, Dynamic Macro Recording, mouse on hjkl, locks */
         KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_EJCT, KC_EJCT,
-        ALT_TAB,  WM_LEFT,  KC_UP,    WM_RGHT,  DM_PLY1,  DM_REC1,  KC_BTN1,  KC_BTN2,  KC_WH_U,  KC_WH_D,  KC_ACL0,  KC_TRNS,  KC_TRNS,
+        KC_TRNS,  WM_LEFT,  KC_UP,    WM_RGHT,  DM_PLY1,  DM_REC1,  KC_BTN1,  KC_BTN2,  KC_WH_U,  KC_WH_D,  KC_ACL0,  KC_TRNS,  KC_TRNS,
         KC_TRNS,  KC_LEFT,  KC_DOWN,  KC_RGHT,  DM_PLY2,  DM_REC2,  KC_MS_L,  KC_MS_D,  KC_MS_U,  KC_MS_R,  KC_ACL2,  KC_NUM,   KC_TRNS,  KC_TRNS,
         KC_TRNS,            KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_MPLY,  DM_RSTP,  KC_PGDN,  KC_PGUP,  KC_SCRL,  KC_BRMD,  KC_BRMU,  KC_BRK,   KC_TRNS,
         HPT_TOG,  HPT_RST,  HPT_FBK,                                KC_TRNS,                                OS_SWAP,  KC_TRNS,  KC_TRNS,  KC_TRNS),
@@ -70,13 +85,23 @@ LT(LOWER, KC_CAPS), KC_A,   KC_S,     KC_D,  KC_F,  KC_G,  KC_H,    KC_J,  KC_K,
         KC_TRNS,  KC_TRNS,  KC_TRNS,                                KC_TRNS,                                KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS),
 };
 
+
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ O L E D                                                                                                                                    │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
+
 #ifdef OLED_ENABLE
+uint32_t oled_timer = 0;
+
+// ┌───────────────────────────────────────────────────────────┐
+// │ d y n a m i c   m a c r o                                 │
+// └───────────────────────────────────────────────────────────┘
 
 char layer_state_str[24];
 char o_text[24] = "";
 int dmacro_num = 0; 
 
-// Load icons when recording a dynamic macro
 #ifdef DYNAMIC_MACRO_ENABLE
     char dmacro_text[4][24] = { "", "RECORDING", "STOP RECORDING",  "PLAY RECORDING"};
     static uint16_t dmacro_timer;
@@ -120,13 +145,11 @@ void matrix_scan_user(void) {
           }
       }
   #endif
-  if (is_alt_tab_active) {
-    if (timer_elapsed(alt_tab_timer) > 1000) {
-      unregister_code(KC_LALT);
-      is_alt_tab_active = false;
-    }
-  }
 }
+
+// ┌───────────────────────────────────────────────────────────┐
+// │ o l e d   g r a p h i c s                                 │
+// └───────────────────────────────────────────────────────────┘
 
 // Store a shortened version of the Gingham logo on the rear cover's silkscreen
 void render_logo(void) {
@@ -262,42 +285,47 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
-// rotate display
+// ┌───────────────────────────────────────────────────────────┐
+// │ o l e d   r o t a t i o n                                 │
+// └───────────────────────────────────────────────────────────┘
+
 oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
     return OLED_ROTATION_180;
 }
 
-// draw info when idling and logo when typing
-bool oled_task_kb(void) {
-    if (!oled_task_user()) {
-        return false;
-    }
-    if (get_current_wpm() < 60) {
-      #ifdef DYNAMIC_MACRO_ENABLE
-          if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
-          if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
-          if(dmacro_num == 3){ oled_write_P(play_ico, false); }
-      #endif
-      oled_write_ln(o_text, false);
-      render_os_lock_status(); 
+// ┌───────────────────────────────────────────────────────────┐
+// │ w r i t e   t o   o l e d                                 │
+// └───────────────────────────────────────────────────────────┘
+
+bool oled_task_user(void) {
+    if (timer_elapsed32(oled_timer)) > 30000) {
+        oled_off();
+    } else if (timer_elapsed32(oled_timer)) > 10000) {
+        render_logo();
     } else {
-      render_logo();
+        #ifdef DYNAMIC_MACRO_ENABLE
+            if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
+            if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
+            if(dmacro_num == 3){ oled_write_P(play_ico, false); }
+        #endif
+        oled_write_ln(o_text, false);
+        render_os_lock_status(); 
     }
     return false;
 }
 #endif
 
-// disable oled when under low-power mode
-void suspend_power_down_user(void) {
-    oled_off();
-}
 
-void suspend_wakeup_init_user(void) {
-    oled_on();
-}
-
-// macros for keymaps
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    #ifdef OLED_ENABLE
+    oled_timer = timer_read32();
+    #endif
+
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ M A C R O S                                                                                                                                │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
+
     switch (keycode) {
         case OS_SWAP: 
             if (record->event.pressed) {
@@ -320,18 +348,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               clear_keyboard();
               return false;
             }
-        case ALT_TAB:
-            if (record->event.pressed) {
-                if (!is_alt_tab_active) {
-                    is_alt_tab_active = true;
-                    register_code(KC_LALT);
-                }
-                alt_tab_timer = timer_read();
-                register_code(KC_TAB);
-            } else {
-                unregister_code(KC_TAB);
-            }
-            return false;
         case WM_LEFT:
             if (record->event.pressed) {
                 tap_code16(LGUI(KC_LEFT));
@@ -342,6 +358,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code16(LGUI(KC_RGHT));
             }
             return false;
+
+// ┌───────────────────────────────────────────────────────────┐
+// │ l a y e r                                                 │
+// └───────────────────────────────────────────────────────────┘
+
         case QWERTY:
             if (record->event.pressed) {
                 set_single_persistent_default_layer(_QWERTY);

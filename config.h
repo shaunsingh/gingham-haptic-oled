@@ -28,6 +28,7 @@
 #ifdef OLED_ENABLE
 #define OLED_DISPLAY_128X64
 #define OLED_FONT_H "lib/glcdfont.c"
+#define OLED_TIMEOUT 0 
 #endif
 
 // space saving: remove locking key support

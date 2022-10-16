@@ -36,13 +36,11 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Enable Link Time Optimization
-COMBO_ENABLE = no           # I hate combos
 KEY_OVERRIDE_ENABLE = no    # Key overrides are pretty useless too
 
 # OLED
 OLED_ENABLE = yes           # Enable OLED
 OLED_DRIVER = SSD1306       # 128x64 OLED Driver
-WPM_ENABLE = yes            # Enable calculation of WPM
 
 # VIAL
 VIA_ENABLE = yes            # Enable VIA support
