@@ -5,7 +5,7 @@ Gingham keymap with support for
  - SSD1306 128x64 OLED (over i2c)
  - Haptics using pimoroni drv25605l linear actuator
  - Via/Vial keymapping
- - Audio (disabled due to space)
+ - Audio support (disable for size constraints)
 
  Parts Used (these are just the ones I personally used, any oled or haptic with the same driver will perform just fine):
 - [oled, SSD1306 128x64](https://www.amazon.com/Monochrome-Display-Compatible-Leonardo-FireBettle-M0/dp/B087PCKMWB/ref=sr_1_18?crid=3CGBNC91Z2L3J&keywords=SSD1306%2B128x64%2Bpixel%2BOLED%2BDisplays&qid=1665790081&sprefix=ssd1306%2B128x64%2Bpixel%2Boled%2Bdisplays%2Caps%2C83&sr=8-18&th=1)
