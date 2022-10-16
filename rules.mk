@@ -11,30 +11,22 @@ BOOTLOADER = usbasploader
 
 # Default Build Options
 MAGIC_ENABLE = no           # Disable bootmagic
-NKRO_ENABLE = no            # Nkey Rollover (unsupported on VUSB)
-MOUSEKEY_ENABLE = no        # Mouse keys
-CONSOLE_ENABLE = no         # Console for debug
-COMMAND_ENABLE = no         # Commands for debug and configuration
-SLEEP_LED_ENABLE = no       # Breathing sleep LED during USB suspend
-BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
-RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
-SPACE_CADET_ENABLE = no     # Wierd parenthesis shift thing we don't need
+NKRO_ENABLE = no            # Disable Nkey Rollover (unsupported on VUSB)
+CONSOLE_ENABLE = no         # Disable console for debug
+COMMAND_ENABLE = no         # Disable commands for debug and configuration
+SLEEP_LED_ENABLE = no       # Disable breathing sleep LED during USB suspend
+BACKLIGHT_ENABLE = no       # Disable backlight functionality
+RGBLIGHT_ENABLE = no        # Disable RGB underglow
+SPACE_CADET_ENABLE = no     # Disable wierd parenthesis shift thing we don't need
 
-# Usb Nkey Rollover + audio/system controls
+# Audio/system controls
 EXTRAKEY_ENABLE = yes
 
-# VIAL
-VIA_ENABLE = yes            # Enable VIA support
-VIAL_ENABLE = yes           # Enable VIAL support
-VIAL_INSECURE = yes         # My keyboard is insecure :(
-
-# OLED
-OLED_ENABLE = yes           # Enable OLED
-OLED_DRIVER = SSD1306       # 128x64 OLED Driver
-WPM_ENABLE = yes            # Enable calculation of WPM
+# Mouse keys
+MOUSEKEY_ENABLE = yes
 
 # Audio
-AUDIO_ENABLE = no           # Audio output
+AUDIO_ENABLE = no
 
 # Haptics
 HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
@@ -44,7 +36,13 @@ DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Link Time Optimization
-# QMK_SETTINGS = no         # Disable adjust QMK_SETTINGS in Vial
-# COMBO_ENABLE = no         # Disable "regular" combos
-# KEY_OVERRIDE_ENABLE = no  # Disable "overridding" sets of keys
-# TAP_DANCE_ENABLE = no     # Disable 1-2-3 tap combos
+
+# OLED
+OLED_ENABLE = yes           # Enable OLED
+OLED_DRIVER = SSD1306       # 128x64 OLED Driver
+WPM_ENABLE = yes            # Enable calculation of WPM
+
+# VIAL
+VIA_ENABLE = yes            # Enable VIA support
+VIAL_ENABLE = yes           # Enable VIAL support
+VIAL_INSECURE = yes         # My keyboard is insecure :(
