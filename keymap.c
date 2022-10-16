@@ -120,12 +120,12 @@ void matrix_scan_user(void) {
           }
       }
   #endif
-  if (is_alt_tab_active) {
-    if (timer_elapsed(alt_tab_timer) > 1000) {
-      unregister_code(KC_LALT);
-      is_alt_tab_active = false;
-    }
-  }
+//  if (is_alt_tab_active) {
+//    if (timer_elapsed(alt_tab_timer) > 1000) {
+//      unregister_code(KC_LALT);
+//      is_alt_tab_active = false;
+//    }
+//  }
 }
 
 // Store a shortened version of the Gingham logo on the rear cover's silkscreen
