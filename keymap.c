@@ -384,12 +384,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(_ADJUST);
             }
             return false;
-      case KC_MPLY:
-        if (record->event.pressed) {
-          #ifdef HAPTIC_ENABLE
-                  DRV_pulse(sharp_click);
-          #endif
-        }
         break;
     }
     return true;
