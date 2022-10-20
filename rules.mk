@@ -8,10 +8,10 @@ MOUSEKEY_ENABLE = yes
 AUDIO_ENABLE = no
 
 # Haptics
-# HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
+# HAPTIC_DRIVER = DRV2605L  # Pimoroni Haptics
 
 # Dynamic Macros
-DYNAMIC_MACRO_ENABLE = no   # Live Macro Recording
+DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = no             # Enable Link Time Optimization
