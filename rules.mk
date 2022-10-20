@@ -8,7 +8,7 @@ MOUSEKEY_ENABLE = yes
 AUDIO_ENABLE = no
 
 # Haptics
-HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
+# HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
 
 # Dynamic Macros
 DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
@@ -19,7 +19,7 @@ SPACE_CADET_ENABLE = no     # Disable wierd parenthesis shift thing we don't nee
 KEY_OVERRIDE_ENABLE = no    # Key overrides just feel weird
 
 # OLED
-OLED_ENABLE = yes           # Enable OLED
+OLED_ENABLE = no            # Enable OLED
 OLED_DRIVER = SSD1306       # 128x64 OLED Driver
 
 # VIAL
