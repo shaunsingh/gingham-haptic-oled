@@ -14,7 +14,7 @@ AUDIO_ENABLE = no
 DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
-LTO_ENABLE = no             # Enable Link Time Optimization
+LTO_ENABLE = yes            # Enable Link Time Optimization
 SPACE_CADET_ENABLE = no     # Disable wierd parenthesis shift thing we don't need
 KEY_OVERRIDE_ENABLE = no    # Key overrides just feel weird
 
