@@ -27,10 +27,10 @@ HAPTIC_ENABLE = yes
 HAPTIC_DRIVER = DRV2605L
 
 # OLED
-OLED_ENABLE = yes           # Enable OLED
+OLED_ENABLE = no            # Enable OLED
 
 # Dynamic Macros
-DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
+DYNAMIC_MACRO_ENABLE = no   # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Enable Link Time Optimization
