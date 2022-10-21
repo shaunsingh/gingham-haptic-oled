@@ -27,14 +27,15 @@ MOUSEKEY_ENABLE = yes
 AUDIO_ENABLE = no
 
 # Haptics
-HAPTIC_ENABLE = yes
+HAPTIC_ENABLE = no
 HAPTIC_DRIVER += DRV2605L
+
+# OLED
+OLED_ENABLE = yes         # Enable OLED
 
 # VIA
 VIA_ENABLE = yes          # Enable VIA support
 
-# OLED
-OLED_ENABLE = no            # Enable OLED
 
 # Dynamic Macros
 DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
