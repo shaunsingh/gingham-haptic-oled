@@ -42,8 +42,8 @@ jobs:
       with:
         fetch-depth: 0
     - name: Clone QMK
-      run: |
-        cd .. && git clone https://github.com/qmk/qmk_firmware.git --branch develop --single-branch
+      # run: cd .. && git clone https://github.com/qmk/qmk_firmware.git --branch develop --single-branch
+      run: cd .. && git clone --depth 1 https://github.com/qmk/qmk_firmware.git
     - name: Install dependencies
       run: cd ../qmk_firmware && pip3 install -r requirements-dev.txt
     - name: Compile Keyboard Firmware
