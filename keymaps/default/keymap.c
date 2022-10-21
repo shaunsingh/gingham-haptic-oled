@@ -226,7 +226,7 @@ void render_status(void) {
     oled_write_P(sep_h2, false);
 
     // draw haptic icon
-    #ifndef HAPTIC_ENABLE 
+    #ifdef HAPTIC_ENABLE 
         oled_write_P(b_lock, false);
         oled_write_P(hap_en, false); 
     #endif
