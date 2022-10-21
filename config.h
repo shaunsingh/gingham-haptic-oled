@@ -46,6 +46,5 @@
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
 
-// space saving: disable one-shots & debug
+// space saving: disable one-shots
 #define NO_ACTION_ONESHOT
-#define NO_DEBUG
