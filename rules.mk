@@ -14,7 +14,7 @@ AUDIO_ENABLE = no           # Audio output
 
 VIA_ENABLE = yes
 LTO_ENABLE = yes
-OLED_ENABLE = no
+OLED_ENABLE = yes
 HAPTIC_ENABLE = yes
 EXTRAKEY_ENABLE = yes
 MOUSEKEY_ENABLE = yes
