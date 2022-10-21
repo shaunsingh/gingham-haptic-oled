@@ -37,18 +37,6 @@ enum custom_keycodes {
     WM_RGHT,             // next workspace
 };
 
-// ┌───────────────────────────────────────────────────────────┐
-// │ d e f i n e   s o u n d s                                 │
-// └───────────────────────────────────────────────────────────┘
-
-#ifdef AUDIO_ENABLE
-  #define WINXP_SOUND W__NOTE(_DS6), Q__NOTE(_DS5), H__NOTE(_AS5), H__NOTE(_GS5), H__NOTE(_DS5), H__NOTE(_DS6), H__NOTE(_AS5)
-  #define MAC_SOUND S__NOTE(_CS5), B__NOTE(_C5)
- 
-  float winxp_song[][2] = SONG(WINXP_SOUND);
-  float mac_song[][2] = SONG(MAC_SOUND);
-#endif
-
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ K E Y M A P S                                                                                                                              │
 // └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -179,10 +167,6 @@ void render_status(void) {
     static const char PROGMEM c_lock[] = {0x93, 0x94, 0};
     static const char PROGMEM s_lock[] = {0x8F, 0x90, 0};
     static const char PROGMEM sep_h2[] = {0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0};
-    #ifdef AUDIO_ENABLE 
-      static const char PROGMEM aud_en[] = {0xAF, 0xB0, 0};
-      static const char PROGMEM aud_di[] = {0xCF, 0xD0, 0};
-    #endif   
     #ifdef HAPTIC_ENABLE
       static const char PROGMEM hap_en[] = {0xB1, 0xB2, 0};
     #endif   
@@ -241,23 +225,9 @@ void render_status(void) {
     // draw space seperator (again)
     oled_write_P(sep_h2, false);
 
-    // draw haptic icon & audio icon
-    #ifndef AUDIO_ENABLE 
-        oled_write_P(b_lock, false);
-    #endif
+    // draw haptic icon
     #ifndef HAPTIC_ENABLE 
         oled_write_P(b_lock, false);
-    #endif
-
-    #ifdef AUDIO_ENABLE
-        if (is_audio_on()) { 
-          oled_write_P(aud_en, false); 
-        } else {
-          oled_write_P(aud_di, false);
-        }
-    #endif
-
-     #ifdef HAPTIC_ENABLE
         oled_write_P(hap_en, false); 
      #endif
 }
@@ -335,15 +305,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (!keymap_config.swap_lctl_lgui) {
                   keymap_config.swap_lctl_lgui = true;
-                  #ifdef AUDIO_ENABLE
-                    PLAY_SONG(mac_song);
-                  #endif
                 }
                 else {
                   keymap_config.swap_lctl_lgui = false;
-                  #ifdef AUDIO_ENABLE
-                    PLAY_SONG(winxp_song);
-                  #endif
                 }
               #ifdef HAPTIC_ENABLE
                 DRV_pulse(pulsing_strong);

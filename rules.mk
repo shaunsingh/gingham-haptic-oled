@@ -23,23 +23,17 @@ EXTRAKEY_ENABLE = yes
 # Mouse keys
 MOUSEKEY_ENABLE = yes
 
-# Audio
-AUDIO_ENABLE = no
-
 # Haptics
-HAPTIC_ENABLE = no
+HAPTIC_ENABLE = yes
 HAPTIC_DRIVER = DRV2605L
 
 # OLED
 OLED_ENABLE = yes           # Enable OLED
 
-# VIA
-VIA_ENABLE = yes            # Enable VIA support
-
 # Dynamic Macros
-DYNAMIC_MACRO_ENABLE = no   # Live Macro Recording
+DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
-# LTO_ENABLE = yes          # Enable Link Time Optimization
+LTO_ENABLE = yes            # Enable Link Time Optimization
 
 CUSTOM_MATRIX = lite
