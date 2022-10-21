@@ -21,14 +21,15 @@ jobs:
       run: cd ../qmk_firmware && pip3 install -r requirements-dev.txt
     - name: Compile Keyboard Firmware
       run: |
-        cd ..  && cp -r gingham-haptic-oled/ qmk_firmware/keyboards/yiancardesigns/gingham/keymaps/
+        cd ..  && cp -r gingham-haptic-oled/ qmk_firmware/keyboards/
         cd qmk_firmware
-        make yiancardesigns/gingham:gingham-haptic-oled
+        mv keyboards/gingham-haptic-oled/ keyboards/gingham/
+        make gingham:default
     - name: Copy Firmware
       run: |
-        cd .. && cp qmk_firmware/yiancardesigns_gingham_gingham-haptic-oled.hex gingham-haptic-oled/
+        cd .. && cp qmk_firmware/gingham_gingham-haptic-oled.hex gingham-haptic-oled/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         name: gingham-haptic-oled-firmware.hex
-        path: yiancardesigns_gingham_gingham-haptic-oled.hex
+        path: gingham_default.hex

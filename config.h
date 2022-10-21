@@ -1,5 +1,20 @@
 #pragma once
 
+#include "config_common.h"
+
+/* key matrix size */
+#define MATRIX_ROWS 5
+#define MATRIX_COLS 14
+
+// A Custom matrix.c is used to poll the port expander C6 shows that the pins are hardwired there
+#define MATRIX_ROW_PINS { D0, C3, D1, C1, C2 }
+#define MATRIX_COL_PINS { D4, D4, C0, B5, D5, B4, D6, B1, B0, B2, D7, B3, D4, D4 }
+#define PORT_EXPANDER_ADDRESS 0x20
+
+// COL2ROW, ROW2COL
+#define DIODE_DIRECTION COL2ROW
+#define USB_MAX_POWER_CONSUMPTION 100
+
 // general settings
 #define TAPPING_TERM 170
 #define TAPPING_TOGGLE 2
@@ -31,5 +46,6 @@
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
 
-// space saving: disable one-shots
+// space saving: disable one-shots & debug
 #define NO_ACTION_ONESHOT
+#define NO_DEBUG
