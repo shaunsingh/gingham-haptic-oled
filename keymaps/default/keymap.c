@@ -1,8 +1,11 @@
 #include QMK_KEYBOARD_H
-
-#include "drivers/haptic/DRV2605L.h"
 #include <stdio.h>
 #include <string.h>
+
+// load haptic driver
+#ifdef HAPTIC_ENABLE
+#include "drivers/haptic/DRV2605L.h"
+#endif
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ D E F I N I T I O N S                                                                                                                      │
@@ -70,10 +73,22 @@ LT(LOWER, KC_CAPS), KC_A,   KC_S,     KC_D,  KC_F,  KC_G,  KC_H,    KC_J,  KC_K,
 };
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ H A P T I C   F E E D B A C K                                                                                                              │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
+
+void keyboard_post_init_user(void) {
+  #if HAPTIC_ENABLE
+    haptic_enable();
+  #endif
+}
+
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ O L E D                                                                                                                                    │
 // └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 // ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 
+#ifdef OLED_ENABLE
 
 // timer for oled sleep status
 uint32_t oled_timer = 0;
@@ -87,44 +102,49 @@ char layer_state_str[24];
 char o_text[24] = "";
 int dmacro_num = 0; 
 
-char dmacro_text[4][24] = { "", "RECORDING", "STOP RECORDING",  "PLAY RECORDING"};
-static uint16_t dmacro_timer;
-const char PROGMEM rec_ico[] = {0xD1, 0xE1, 0};
-const char PROGMEM stop_ico[] = {0xD3, 0xE1, 0};
-const char PROGMEM play_ico[] = {0xD2, 0xE1, 0};
+#ifdef DYNAMIC_MACRO_ENABLE
+    char dmacro_text[4][24] = { "", "RECORDING", "STOP RECORDING",  "PLAY RECORDING"};
+    static uint16_t dmacro_timer;
+    const char PROGMEM rec_ico[] = {0xD1, 0xE1, 0};
+    const char PROGMEM stop_ico[] = {0xD3, 0xE1, 0};
+    const char PROGMEM play_ico[] = {0xD2, 0xE1, 0};
 
-void dynamic_macro_record_start_user(void) {
-      dmacro_num = 1;
-    return;
-}
+    void dynamic_macro_record_start_user(void) {
+          dmacro_num = 1;
+        return;
+    }
 
-void dynamic_macro_record_end_user(int8_t direction) {
-      dmacro_num = 2;
-      dmacro_timer = timer_read();
-    return; 
-}
+    void dynamic_macro_record_end_user(int8_t direction) {
+          dmacro_num = 2;
+          dmacro_timer = timer_read();
+        return; 
+    }
 
-void dynamic_macro_play_user(int8_t direction) {
-      dmacro_num = 3;
-      dmacro_timer = timer_read();
-    return; 
-}
+    void dynamic_macro_play_user(int8_t direction) {
+          dmacro_num = 3;
+          dmacro_timer = timer_read();
+        return; 
+    }
+#endif
+
 
 void matrix_scan_user(void) {
+  #ifdef DYNAMIC_MACRO_ENABLE
     if (dmacro_num > 0) {
         if (timer_elapsed(dmacro_timer) < 3000) {
             strcpy ( o_text, dmacro_text[dmacro_num] );
-        }
+          }
         else {
             if (dmacro_num == 1) {
                 strcpy ( o_text, dmacro_text[1] );
-            }
+              }
             else {
                 strcpy ( o_text, layer_state_str );
                 dmacro_num = 0;
-            }
-        }
-    }
+              }
+          }
+      }
+  #endif
 }
 
 // ┌───────────────────────────────────────────────────────────┐
@@ -158,7 +178,9 @@ void render_status(void) {
     static const char PROGMEM c_lock[] = {0x93, 0x94, 0};
     static const char PROGMEM s_lock[] = {0x8F, 0x90, 0};
     static const char PROGMEM sep_h2[] = {0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0xE1, 0};
-    static const char PROGMEM hap_en[] = {0xB1, 0xB2, 0};
+    #ifdef HAPTIC_ENABLE
+      static const char PROGMEM hap_en[] = {0xB1, 0xB2, 0};
+    #endif   
   
     // vertical seperator 1/2
     oled_write_ln_P(sep_v, false);
@@ -215,8 +237,10 @@ void render_status(void) {
     oled_write_P(sep_h2, false);
 
     // draw haptic icon
-    oled_write_P(b_lock, false);
-    oled_write_P(hap_en, false); 
+    #ifdef HAPTIC_ENABLE 
+        oled_write_P(b_lock, false);
+        oled_write_P(hap_en, false); 
+    #endif
 }
 
 // if we aren't writing a macro then display current layer
@@ -263,18 +287,23 @@ bool oled_task_user(void) {
     } else if (timer_elapsed32(oled_timer) > 10000) {
         render_logo();
     } else {
-        if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
-        if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
-        if(dmacro_num == 3){ oled_write_P(play_ico, false); }
+        #ifdef DYNAMIC_MACRO_ENABLE
+            if(dmacro_num == 1){ oled_write_P(rec_ico, false); }
+            if(dmacro_num == 2){ oled_write_P(stop_ico, false); }
+            if(dmacro_num == 3){ oled_write_P(play_ico, false); }
+        #endif
         oled_write_ln(o_text, false);
         render_status(); 
     }
     return false;
 }
+#endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // poll timer
-    oled_timer = timer_read32();
+    #ifdef OLED_ENABLE
+        oled_timer = timer_read32();
+    #endif
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ M A C R O S                                                                                                                                │
@@ -291,7 +320,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else {
                   keymap_config.swap_lctl_lgui = false;
                 }
-              DRV_pulse(pulsing_strong);
+              #ifdef HAPTIC_ENABLE
+                DRV_pulse(pulsing_strong);
+              #endif
               eeconfig_update_keymap(keymap_config.raw);
               clear_keyboard();
               return false;
@@ -316,14 +347,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case QWERTY:
             if (record->event.pressed) {
                 set_single_persistent_default_layer(_QWERTY);
-                DRV_pulse(transition_hum);
+                #ifdef HAPTIC_ENABLE
+                  DRV_pulse(transition_hum);
+                #endif
             }
             return false;
         case LOWER:
             if (record->event.pressed) {
                 layer_on(_LOWER);
                 update_tri_layer(_LOWER, _RAISE, _ADJUST);
-                DRV_pulse(soft_bump);
+                #ifdef HAPTIC_ENABLE
+                        DRV_pulse(soft_bump);
+                #endif
             } else {
                 layer_off(_LOWER);
                 update_tri_layer(_LOWER, _RAISE, _ADJUST);
@@ -333,7 +368,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 layer_on(_RAISE);
                 update_tri_layer(_LOWER, _RAISE, _ADJUST);
-                DRV_pulse(soft_bump);
+                #ifdef HAPTIC_ENABLE
+                        DRV_pulse(soft_bump);
+                #endif
             } else {
                 layer_off(_RAISE);
                 update_tri_layer(_LOWER, _RAISE, _ADJUST);
@@ -342,7 +379,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case ADJUST:
             if (record->event.pressed) {
                 layer_on(_ADJUST);
-                DRV_pulse(lg_dblclick_str);
+                #ifdef HAPTIC_ENABLE
+                        DRV_pulse(lg_dblclick_str);
+                #endif
             } else {
                 layer_off(_ADJUST);
             }
