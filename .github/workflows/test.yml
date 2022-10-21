@@ -45,7 +45,7 @@ jobs:
       run: |
         cd .. && git clone https://github.com/qmk/qmk_firmware.git --branch develop --single-branch
     - name: Install dependencies
-      run: cd qmk_firmware && pip3 install -r requirements-dev.txt
+      run: cd ../qmk_firmware && pip3 install -r requirements-dev.txt
     - name: Compile Keyboard Firmware
       run: |
         cd ..  && cp -r gingham-haptic-oled/ qmk_firmware/keyboards/yiancardesigns/gingham/keymaps/
