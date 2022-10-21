@@ -27,7 +27,7 @@ jobs:
         make gingham:default
     - name: Copy Firmware
       run: |
-        cd .. && cp qmk_firmware/gingham_gingham-haptic-oled.hex gingham-haptic-oled/
+        cd .. && cp qmk_firmware/gingham_default.hex gingham-haptic-oled/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
