@@ -38,8 +38,7 @@ SPACE_CADET_ENABLE = no     # Disable wierd parenthesis shift thing we don't nee
 KEY_OVERRIDE_ENABLE = no    # Key overrides just feel weird
 
 # OLED
-OLED_ENABLE = yes           # Enable OLED
-OLED_DRIVER = SSD1306       # 128x64 OLED Driver
+OLED_ENABLE = no            # Enable OLED
 
 # VIAL
 VIA_ENABLE = yes          # Enable VIA support
