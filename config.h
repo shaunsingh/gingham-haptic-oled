@@ -31,8 +31,7 @@
 #define F_LRA 150 // resonance freq
 #define DRV_GREETING alert_750ms
 #define DRV_MODE_DEFAULT sharp_tick1
-#define NO_HAPTIC_MOD
-#define NO_HAPTIC_LOCKKEYS
+// #define NO_HAPTIC_MOD
 #endif
 
 // oled settings

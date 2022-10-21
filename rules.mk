@@ -27,20 +27,19 @@ MOUSEKEY_ENABLE = yes
 AUDIO_ENABLE = no
 
 # Haptics
-HAPTIC_DRIVER = DRV2605L    # Pimoroni Haptics
+HAPTIC_ENABLE = yes
+HAPTIC_DRIVER += DRV2605L
+
+# VIA
+VIA_ENABLE = yes          # Enable VIA support
+
+# OLED
+OLED_ENABLE = no            # Enable OLED
 
 # Dynamic Macros
 DYNAMIC_MACRO_ENABLE = yes  # Live Macro Recording
 
 # Space saving
 LTO_ENABLE = yes            # Enable Link Time Optimization
-SPACE_CADET_ENABLE = no     # Disable wierd parenthesis shift thing we don't need
-KEY_OVERRIDE_ENABLE = no    # Key overrides just feel weird
-
-# OLED
-OLED_ENABLE = no            # Enable OLED
-
-# VIAL
-VIA_ENABLE = yes          # Enable VIA support
 
 CUSTOM_MATRIX = lite
