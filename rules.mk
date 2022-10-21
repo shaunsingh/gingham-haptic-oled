@@ -23,6 +23,4 @@ OLED_ENABLE = yes           # Enable OLED
 OLED_DRIVER = SSD1306       # 128x64 OLED Driver
 
 # VIAL
-# VIA_ENABLE = yes          # Enable VIA support
-# VIAL_ENABLE = yes         # Enable VIAL support
-# VIAL_INSECURE = yes       # My keyboard is insecure :(
+VIA_ENABLE = yes          # Enable VIA support

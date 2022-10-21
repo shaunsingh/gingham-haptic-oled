@@ -1,8 +1,5 @@
 #pragma once
 
-// every vial keyboard needs a unique UID
-// #define VIAL_KEYBOARD_UID { 0x21, 0x72, 0x62, 0xA2, 0x6D, 0xD7, 0x3C, 0x39 }
-
 // general settings
 #define TAPPING_TERM 170
 #define TAPPING_TOGGLE 2

@@ -6,34 +6,6 @@ on:
     - main
 
 jobs:
-# VIAL
-#  test:
-#    runs-on: ubuntu-latest
-#    container: qmkfm/qmk_cli
-#    steps:
-#    - uses: actions/checkout@v2
-#      with:
-#        fetch-depth: 0
-#    - name: Install Vial
-#      run: |
-#        cd .. && git clone --depth 1 https://github.com/vial-kb/vial-qmk.git
-#        cd vial-qmk && make git-submodule
-#    - name: Compile Keyboard Firmware
-#      run: |
-#        cd ..  && cp -r gingham-haptic-oled/ vial-qmk/keyboards/yiancardesigns/gingham/keymaps/
-#        cd vial-qmk 
-#        python3 util/ci_vial_verify_uid.py 
-#        make yiancardesigns/gingham:gingham-haptic-oled
-#    - name: Copy Firmware
-#      run: |
-#        cd .. && cp vial-qmk/yiancardesigns_gingham_gingham-haptic-oled.hex gingham-haptic-oled/
-#    - name: Upload a Build Artifact
-#      uses: actions/upload-artifact@v3.1.0
-#      with:
-#        name: gingham-haptic-oled-firmware.hex
-#        path: yiancardesigns_gingham_gingham-haptic-oled.hex
-
-# QMK
   test:
     runs-on: ubuntu-latest
     container: qmkfm/qmk_cli
