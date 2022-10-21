@@ -229,7 +229,7 @@ void render_status(void) {
     #ifndef HAPTIC_ENABLE 
         oled_write_P(b_lock, false);
         oled_write_P(hap_en, false); 
-     #endif
+    #endif
 }
 
 // if we aren't writing a macro then display current layer
